@@ -21,6 +21,8 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
+      localStorage.removeItem("currentPatientId");
+      localStorage.removeItem("currentPatientName");
       window.location.href = "/";
     }
   };

@@ -3,8 +3,8 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: #fff;
-    color: #212529;
+    background: #f4f7f6;
+    color: #333;
 }
 
 /* Header with Settings, Search, and Circle */
@@ -13,68 +13,33 @@ html, body {
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
-    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
     background: #fff;
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .settings-title {
     font-size: 32px;
     font-weight: 700;
-    color: #000000;
-}
-
-.search-container {
-    flex-grow: 1;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.search-box {
-    padding: 6px;
-    border: 1px solid #000;
-    border-radius: 20px;
-    max-width: 80%;
-    width: 800px;
-}
-
-/* Section titles */
-.section-title {
-    font-size: 26px;
-    font-weight: 600;
-    color: #2e86ab;
-    margin-bottom: 25px;
-}
-
-/* Section headers - replacing buttons */
-.section-header {
-    font-size: 20px;
-    font-weight: 600;
-    color: #1976d2;
-    margin-bottom: 20px;
-    margin-top: 30px;
-    padding: 12px 0;
-    border-bottom: 3px solid #1976d2;
-    background: linear-gradient(90deg, rgba(39, 54, 193, 0.1) 0%, rgba(14, 34, 133, 0.05) 100%);
-    padding-left: 15px;
-    border-radius: 5px;
-}
-
-.section-header:first-of-type {
-    margin-top: 0;
+    color: #2c3e50;
+    margin: 0;
+    padding-left: 20px;
 }
 
 /* Profile page container */
 .profile-section {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 30px;
     min-height: 100%;
-    overflow-y: auto;
-    background: #fff;
-    padding: 20px;
+    background: #f4f7f6;
+    padding: 20px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Section containers */
@@ -84,31 +49,92 @@ html, body {
 .allergy-section,
 .family-history-section,
 .social-history-section {
-    margin-bottom: 30px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.demographics-section:hover,
+.contact-section:hover,
+.insurance-section:hover,
+.allergy-section:hover,
+.family-history-section:hover,
+.social-history-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+}
+
+/* Section Header Container */
+.section-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f2f5;
+}
+
+/* Section headers */
+.section-header {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+    background: none;
+    padding: 0;
+    border: none;
+}
+
+/* Edit Button */
+.edit-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.edit-button:hover {
+    background-color: #2980b9;
 }
 
 /* Info grid */
 .info-grid {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .info-row {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid #f9f9f9;
+}
+
+.info-row:last-child {
+    border-bottom: none;
 }
 
 .info-label {
     font-weight: 600;
-    color: #495057;
-    min-width: 180px;
-    margin-right: 15px;
+    color: #7f8c8d;
+    min-width: 200px;
+    margin-right: 20px;
+    font-size: 15px;
 }
 
 .info-value {
     flex: 1;
-    color: #212529;
+    color: #2c3e50;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 /* Display containers */
@@ -118,25 +144,38 @@ html, body {
 .allergy-display,
 .family-history-display,
 .social-history-display {
-    background: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    /* Styles are handled by the section container now for a cleaner look */
 }
 
 /* Insurance info specific styling */
-.insurance-info p {
-    margin: 8px 0;
-    display: flex;
-    align-items: flex-start;
+.insurance-block {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #e0e0e0;
 }
 
-.insurance-info strong {
+.insurance-block:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.insurance-block h4 {
+    color: #34495e;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.insurance-block p {
+    margin: 8px 0;
+    display: flex;
+    align-items: baseline;
+}
+
+.insurance-block strong {
     font-weight: 600;
-    color: #495057;
-    min-width: 180px;
-    margin-right: 15px;
+    color: #7f8c8d;
+    min-width: 200px;
+    margin-right: 20px;
     display: inline-block;
 }
 
@@ -150,137 +189,129 @@ html, body {
 .allergy-list li {
     margin: 8px 0;
     padding: 5px 0;
+    display: flex;
+    align-items: baseline;
+}
+
+.allergy-list strong {
+    min-width: 140px;
+    color: #7f8c8d;
 }
 
 /* Grids for allergy/family/social history */
 .allergy-grid,
 .family-members-grid,
-.social-history-grid {
+.social-history-grid,
+.genetic-conditions-grid {
     display: grid;
     gap: 20px;
 }
 
 .allergy-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .family-members-grid {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 }
 
 .social-history-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 }
 
-/* Section headers */
+/* Section headers within grids */
 .allergy-title,
 .family-member-title,
 .social-history-column h4 {
     font-size: 18px;
     font-weight: 600;
-    color: #1976d2;
-    margin-bottom: 12px;
-    margin-top: 20px;
-    border-bottom: 2px solid #1976d2;
-    padding-bottom: 5px;
-}
-
-.social-history-column h4:first-child {
+    color: #34495e;
+    margin-bottom: 15px;
     margin-top: 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ecf0f1;
 }
 
-/* Individual allergy and family member containers */
+/* Individual cards */
 .allergy-column,
-.family-member {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
+.family-member,
+.social-history-column {
+    background: #fdfdfd;
+    border: 1px solid #ecf0f1;
     border-radius: 8px;
-    padding: 15px;
+    padding: 20px;
+    transition: box-shadow 0.2s ease;
 }
 
-/* Table for genetic conditions */
-.genetic-conditions-table {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1.5fr 1.2fr 1fr;
-    background: #dee2e6;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-top: 20px;
+.allergy-column:hover,
+.family-member:hover,
+.social-history-column:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
 }
 
-.genetic-conditions-section {
-    width: 100%;
-    overflow-x: auto;
-    margin-top: 30px;
+/* Footer / Next Button */
+.preview-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
 }
 
-.genetic-conditions-section h4 {
+.preview-next-button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
     font-size: 18px;
     font-weight: 600;
-    color: #1976d2;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #1976d2;
-    padding-bottom: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(39, 174, 96, 0.2);
 }
 
-.table-header {
-    display: contents;
-}
-
-.table-row {
-    display: contents;
-}
-
-.table-header span {
-    background: #4f99e4;
-    color: white;
-    font-weight: 600;
-    padding: 12px 10px;
-}
-
-.table-row span {
-    background: #fff;
-    padding: 12px 10px;
-    border-bottom: 1px solid #f1f3f4;
+.preview-next-button:hover {
+    background-color: #219150;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(39, 174, 96, 0.3);
 }
 
 /* Responsive design */
 @media (max-width: 1024px) {
-    .social-history-grid {
-        grid-template-columns: 1fr;
-    }
-    .family-members-grid {
-        grid-template-columns: 1fr;
-    }
+    .social-history-grid,
+    .family-members-grid,
     .allergy-grid {
         grid-template-columns: 1fr;
     }
-    .search-box {
-        width: 250px;
+    
+    .profile-section {
+        padding: 20px;
     }
 }
 
 @media (max-width: 768px) {
-    .info-row {
+    .info-row,
+    .insurance-block p,
+    .allergy-list li {
         flex-direction: column;
     }
-    .info-label {
+    
+    .info-label,
+    .insurance-block strong,
+    .allergy-list strong {
         min-width: auto;
         margin-bottom: 4px;
+        color: #95a5a6;
     }
-    .insurance-info strong {
-        min-width: auto;
-        margin-bottom: 4px;
-        display: block;
-    }
-    .insurance-info p {
+    
+    .section-header-container {
         flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
-    .genetic-conditions-table {
-        grid-template-columns: 1fr;
-    }
-    .genetic-conditions-table .table-header span,
-    .genetic-conditions-table .table-row span {
-        padding: 8px;
+    
+    .edit-button {
+        width: 100%;
     }
 }
