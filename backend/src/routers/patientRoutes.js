@@ -20,6 +20,7 @@ router.get("/family-history/:patientId", getPatientFamilyHistory);
 router.get("/social-history/:patientId", getSocialHistoryOverview);
 router.get("/social-history/:patientId/:section", getSocialHistorySection);
 router.get("/patients/:patientId/profile", getPatientProfileSummary);
+router.get("/visits/:patientId", require("../controllers/patientController").getPatientVisits);
 
 module.exports = router;
 

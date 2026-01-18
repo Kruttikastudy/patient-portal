@@ -289,6 +289,28 @@ const getPatientProfileSummary = async (req, res) => {
   }
 };
 
+const getPatientVisits = async (req, res) => {
+  try {
+    const patientId = req.params.patientId;
+    const Visit = require("../models/visits");
+
+    const visits = await Visit.find({ patient_id: patientId })
+      .sort({ createdAt: -1 }) // Sort by most recent
+      .lean();
+
+    res.json({
+      success: true,
+      data: visits
+    });
+  } catch (error) {
+    console.error("Visits fetch error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch patient visits"
+    });
+  }
+};
+
 module.exports = {
   getPatientDemographics,
   getPatientContactInfo,
@@ -297,7 +319,8 @@ module.exports = {
   getPatientFamilyHistory,
   getSocialHistoryOverview,
   getSocialHistorySection,
-  getPatientProfileSummary
+  getPatientProfileSummary,
+  getPatientVisits
 };
 
 
