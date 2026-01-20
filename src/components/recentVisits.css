@@ -1,312 +1,213 @@
-/* Recent Visits container */
 .recent-visits-container {
-    flex: 1;
-    padding: 40px;
-    background: white;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
 }
 
-/* Content header */
 .content-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    position: relative;
+    margin-bottom: 20px;
 }
 
 .page-title {
-    font-size: 36px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: bold;
     color: #333;
-    margin: 0;
 }
 
 .search-container {
-  flex-grow: 1;
-  display: flex;
-  justify-content: flex-end;
+    position: relative;
 }
 
 .search-box {
-  padding: 6px;
-  border: 1px solid #000;
-  border-radius: 20px;
-  max-width: 80%;
-  width: 800px;
-}
-
-.search-box:focus {
-    border-color: #2e86ab;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 250px;
 }
 
 .welcome-text {
     color: #666;
-    font-size: 16px;
-    margin: 0 0 30px 0;
+    margin-bottom: 20px;
 }
 
-/* Tabs */
 .tabs {
     display: flex;
-    gap: 0;
-    margin-bottom: 30px;
+    gap: 20px;
     border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
 }
 
 .tab {
-    padding: 15px 25px;
-    background: none;
-    border: none;
-    font-size: 16px;
-    color: #666;
+    padding: 10px 0;
     cursor: pointer;
-    border-bottom: 3px solid transparent;
-    font-weight: 500;
-}
-
-.vitals-button{
-    border-radius: 0px;
+    color: #666;
+    position: relative;
 }
 
 .tab.active {
-    color: #1976d2;
-    border-bottom-color: #1976d2;
-    font-weight: 600;
+    color: #007bff;
+    font-weight: bold;
 }
 
-.tab:hover:not(.active) {
-    color: #2e86ab;
+.tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #007bff;
 }
 
-/* Visit details (for Recent Visits tab) */
 .visit-details {
-    background: #f8f9fa;
-    padding: 25px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 30px;
-}
-
-.visit-details p {
-    margin: 0 0 15px 0;
-    font-size: 16px;
-    color: #333;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
 }
 
 .condition {
-    margin-top: 25px;
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
 }
 
 .condition-link {
-    background: #1976d2;
-    color: white;
+    background: none;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: 500;
+    color: #007bff;
+    font-weight: bold;
     cursor: pointer;
-    margin-bottom: 15px;
-}
-
-.condition-link:hover {
-    background: #4f99e4;
+    padding: 0;
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 .condition ul {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
 .condition li {
-    padding: 8px 0;
-    color: #333;
-    font-size: 15px;
-    border-bottom: 1px solid #eee;
-}
-
-.condition li:last-child {
-    border-bottom: none;
-}
-
-/* Visit History List */
-.visit-history {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    max-height: 500px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 30px;
-}
-
-.visit-item {
-    background: white;
-    padding: 20px 25px;
-    border: none;
-    border-bottom: 1px solid #ddd;
-    border-radius: 0;
-    /* 🔹 UPDATED: stack items vertically */
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-start;
-}
-
-.visit-item:last-child {
-    border-bottom: none;
-}
-
-.visit-item p {
-    margin: 0 0 8px 0;
-    font-size: 16px;
-    color: #333;
-    font-weight: normal;
-}
-
-.visit-item p:first-child {
-    font-weight: 600;
     margin-bottom: 5px;
+    color: #555;
 }
-
-.visit-item p:last-of-type:not(.visit-date) {
-    margin-bottom: 0;
-}
-
-.visit-date {
-    font-weight: 600;
-    font-size: 16px;
-    color: #333;
-    margin-top: 5px; /* 🔹 UPDATED: placed under purpose/doctor */
-    white-space: nowrap;
-}
-
-/* 🔹 UPDATED: buttons aligned under details */
-.visit-actions {
-    margin-top: 10px;
-}
-
-.next-btn:hover {
-    background: #1e5f7a;
-}
-
-.vitals-btn {
-  background: #1976d2 !important;
-  color: white !important;
-  border: none !important;
-  padding: 10px 20px !important;
-  border-radius: 4px !important; /* rectangular look */
-  font-size: 15px !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  margin-top: 10px !important;
-  align-self: flex-start !important;
-}
-
-.vitals-btn:hover {
-  background: #4f99e4 !important;
-}
-
-/* Vitals Summary (Vitals Tab) */
-.vitals-summary {
-  background: #f8f9fa;
-  padding: 25px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  line-height: 1.6;
-  color: #212529;
-}
-
-.vitals-summary h2 {
-  font-size: 22px;
-  font-weight: 600;
-  color: #000000;
-  margin-bottom: 20px;
-}
-
-.vitals-summary p {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  color: #333;
-}
-
-.vitals-summary strong {
-  color: #1976d2;
-}
-
-.summary-btn {
-  background: #1976d2;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-top: 10px;
-  margin-left: 10px; /* space next to Vitals */
-}
-
-.summary-btn:hover {
-  background: #4f99e4;
-}
-
 
 .clinical-summary {
-  background: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 10px;
-  padding: 20px;
-  margin-top: 15px;  /* 🔹 NEW: ensures spacing below visit item */
-  line-height: 1.6;
-  color: #212529;
-  width: 100%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .clinical-summary p {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
+    line-height: 1.5;
 }
 
-.clinical-summary strong {
-  color: #1976d2;
+.visit-history {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
+.visit-item {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .recent-visits-container {
-        padding: 20px;
-    }
-    
-    .content-header {
-        flex-direction: column;
-        gap: 20px;
-        align-items: flex-start;
-    }
-    
-    .search-container {
-        position: static;
-        transform: none;
-    }
-    
-    .search-box {
-        width: 100%;
-        max-width: 300px;
-    }
-    
-    .page-title {
-        font-size: 28px;
-    }
-    
-    .visit-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .visit-date {
-        margin: 10px 0 0 0;
-    }
+.visit-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.visit-date {
+    color: #666;
+}
+
+.visit-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.vitals-btn,
+.summary-btn {
+    padding: 8px 16px;
+    border: 1px solid #007bff;
+    background-color: white;
+    color: #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.vitals-btn:hover,
+.summary-btn:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.vitals-summary {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.vitals-summary h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.vitals-summary p {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.vitals-summary p:last-child {
+    border-bottom: none;
+}
+
+/* Medication Table Styles */
+.medication-history-section {
+    margin-bottom: 10px;
+}
+
+.medication-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.medication-table th,
+.medication-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.medication-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+.medication-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.medication-table tr:hover {
+    background-color: #f1f1f1;
 }
