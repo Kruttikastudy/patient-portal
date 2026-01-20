@@ -7,15 +7,12 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: MONGO_URI
-        fromVariable: MONGO_URI
-      - key: REACT_APP_API_BASE_URL
-        fromVariable: REACT_APP_API_BASE_URL
+      - fromGroup: patient-portal-secrets
 
-variables:
-  - key: MONGO_URI
-    description: Your MongoDB connection string (e.g. mongodb+srv://...)
-    sync: false
-  - key: REACT_APP_API_BASE_URL
-    description: The URL of your Render service (e.g. https://your-app.onrender.com)
-    sync: false
+envVarGroups:
+  - name: patient-portal-secrets
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: REACT_APP_API_BASE_URL
+        sync: false
