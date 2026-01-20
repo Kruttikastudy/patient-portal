@@ -8,6 +8,14 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGO_URI
-        fromConfig: true # User should provide this in the dashboard
+        fromVariable: MONGO_URI
       - key: REACT_APP_API_BASE_URL
-        fromConfig: true # Required if the app is not serving itself correctly from the root
+        fromVariable: REACT_APP_API_BASE_URL
+
+variables:
+  - key: MONGO_URI
+    description: Your MongoDB connection string (e.g. mongodb+srv://...)
+    sync: false
+  - key: REACT_APP_API_BASE_URL
+    description: The URL of your Render service (e.g. https://your-app.onrender.com)
+    sync: false
