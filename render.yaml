@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: patient-portal
+    env: node
+    buildCommand: npm install && npm run build && cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        fromConfig: true # User should provide this in the dashboard
+      - key: REACT_APP_API_BASE_URL
+        fromConfig: true # Required if the app is not serving itself correctly from the root

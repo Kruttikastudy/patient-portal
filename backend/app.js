@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const authRoutes = require("./src/routers/authRoutes");
 const patientRoutes = require("./src/routers/patientRoutes");
 
@@ -31,4 +32,15 @@ app.get("/health", (_req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api", patientRoutes);
 
+// Serve static files from the React app build folder
+if (process.env.NODE_ENV === "production") {
+  const buildPath = path.join(__dirname, "../build");
+  app.use(express.static(buildPath));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
+  });
+}
+
 module.exports = app;
+
