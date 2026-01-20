@@ -1,81 +1,93 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./medicalRecords.css";
 
-// Current records
-// Current records
-const currentRecordsData = [
-  {
-    date: "28 June 2024",
-    conditions: "Diabetes Mellitus Type 2",
-    medications: "Metformin 500mg twice daily",
-    allergies: "None",
-    recentAssessments: "Updated",
-    visitIndex: 0, // links to visitsData[0] (June visit)
-  },
-  {
-    date: "28 May 2024",
-    conditions: "Hypertension",
-    medications: "Amoxicillin 500mg",
-    allergies: "Penicillin",
-    recentAssessments: "Updated",
-    visitIndex: 1, // links to visitsData[1] (May visit)
-  },
-  {
-    date: "28 April 2024",
-    conditions: "Hypertension",
-    medications: "Amoxicillin 500mg",
-    allergies: "Penicillin",
-    recentAssessments: "Updated",
-    visitIndex: 2, // links to visitsData[2] (April visit)
-  },
-];
-
-
-// Historical records
-const historicalRecordsData = [
-  {
-    date: "28 March 2024",
-    conditions: "Back Pain",
-    medications: "Ibuprofen 200mg",
-    allergies: "None",
-    recentAssessments: "Updated",
-    visitIndex: 3, // links to visitsData
-  },
-  {
-    date: "28 Feb 2024",
-    conditions: "Flu Symptoms",
-    medications: "Paracetamol 500mg",
-    allergies: "None",
-    recentAssessments: "Updated",
-    visitIndex: 4, // added vitals in visitsData
-  },
-  {
-    date: "28 Jan 2024",
-    conditions: "Cold",
-    medications: "None",
-    allergies: "None",
-    recentAssessments: "Updated",
-    visitIndex: 5, // added vitals in visitsData
-  },
-];
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 
 const MedicalRecordsPage = () => {
   const [activeTab, setActiveTab] = useState("Current Records");
+  const [records, setRecords] = useState([]);
+  const [patientData, setPatientData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const patientId = localStorage.getItem("currentPatientId");
 
-  const renderRecords = (records) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!patientId) {
+        setError("No patient selected");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Fetch patient for profile info and allergies
+        const patientRes = await fetch(`${API_BASE_URL}/api/patients/${patientId}/profile`);
+        const patientJson = await patientRes.json();
+
+        // Fetch visits for conditions and medications
+        const visitsRes = await fetch(`${API_BASE_URL}/api/visits/${patientId}`);
+        const visitsJson = await visitsRes.json();
+
+        if (patientJson.success && visitsJson.success) {
+          const profile = patientJson.data;
+          setPatientData(profile);
+
+          const patientAllergies = profile.allergies?.length > 0
+            ? profile.allergies.map(a => `${a.allergen} (${a.reaction})`).join(", ")
+            : "None";
+
+          const formattedRecords = visitsJson.data.map((visit, index) => ({
+            date: visit.appointment_date || new Date(visit.createdAt).toLocaleDateString(),
+            purpose: visit.visit_type || "General Visit",
+            chiefComplaints: visit.chief_complaints || "Not recorded",
+            conditions: visit.diagnosis?.icd10_quickest || visit.diagnosis?.full_icd10_list || "None",
+            medications: visit.medication_history?.length > 0
+              ? visit.medication_history.map(m => `${m.medicine} ${m.dosage}mg`).join(", ")
+              : "None",
+            treatment: visit.treatment || "Not recorded",
+            allergies: patientAllergies,
+            recentAssessments: visit.notes || "No notes",
+            visitIndex: index,
+          }));
+
+          setRecords(formattedRecords);
+        } else {
+          setError(patientJson.message || visitsJson.message || "Failed to load records");
+        }
+      } catch (err) {
+        console.error("Error fetching medical records:", err);
+        setError("Error loading medical records. Please check if the server is running.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [patientId]);
+
+  const currentRecords = records.slice(0, 3);
+  const historicalRecords = records; // Show all records as requested
+
+  const renderRecords = (recordsList) => {
+    if (recordsList.length === 0) {
+      return <div className="no-records">No records found.</div>;
+    }
+
     return (
       <div className="medical-records-list">
-        {records.map((record, idx) => (
+        {recordsList.map((record, idx) => (
           <div key={idx} className="medical-record-item">
             <div className="record-content">
+              <p><strong>Purpose:</strong> {record.purpose}</p>
+              <p><strong>Chief Complaints:</strong> {record.chiefComplaints}</p>
               <p><strong>Conditions:</strong> {record.conditions}</p>
               <p><strong>Medications:</strong> {record.medications}</p>
+              <p><strong>Treatment:</strong> {record.treatment}</p>
               <p><strong>Allergies:</strong> {record.allergies}</p>
               <p><strong>Recent Assessments:</strong> {record.recentAssessments}</p>
-              
-              {/* Vitals button moved below content */}
+
               <div className="vitals-below-content">
                 {record.visitIndex !== null && (
                   <button
@@ -91,7 +103,7 @@ const MedicalRecordsPage = () => {
                 )}
               </div>
             </div>
-            
+
             <div className="record-actions">
               <div className="record-date">{record.date}</div>
             </div>
@@ -100,6 +112,9 @@ const MedicalRecordsPage = () => {
       </div>
     );
   };
+
+  if (loading) return <div className="medical-records-container">Loading records...</div>;
+  if (error) return <div className="medical-records-container">{error}</div>;
 
   return (
     <div className="medical-records-container">
@@ -114,7 +129,20 @@ const MedicalRecordsPage = () => {
         </div>
       </div>
 
-      {/* Tabs */}
+      {patientData && patientData.demographics && (
+        <div className="patient-summary-card">
+          <h2>Patient Profile Summary</h2>
+          <div className="summary-grid">
+            <p><strong>Name:</strong> {patientData.demographics.name.first} {patientData.demographics.name.last}</p>
+            <p><strong>DOB:</strong> {patientData.demographics.date_of_birth}</p>
+            <p><strong>Gender:</strong> {patientData.demographics.gender}</p>
+            <p><strong>Blood Group:</strong> {patientData.demographics.blood_group}</p>
+            <p><strong>Occupation:</strong> {patientData.demographics.occupation}</p>
+            <p><strong>Contact:</strong> {patientData.contact?.contact_info?.mobile?.code} {patientData.contact?.contact_info?.mobile?.number}</p>
+          </div>
+        </div>
+      )}
+
       <div className="tabs">
         {["Current Records", "Historical Records"].map((tab) => (
           <div
@@ -127,10 +155,9 @@ const MedicalRecordsPage = () => {
         ))}
       </div>
 
-      {/* Tab Content */}
       {activeTab === "Current Records"
-        ? renderRecords(currentRecordsData)
-        : renderRecords(historicalRecordsData)}
+        ? renderRecords(currentRecords)
+        : renderRecords(historicalRecords)}
     </div>
   );
 };

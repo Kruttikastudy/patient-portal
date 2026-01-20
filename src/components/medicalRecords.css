@@ -25,23 +25,66 @@
 }
 
 .search-container {
-  flex-grow: 1;
-  display: flex;
-  justify-content: flex-end;
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .search-box {
-  padding: 6px;
-  border: 1px solid #000;
-  border-radius: 20px;
-  max-width: 80%;
-  width: 800px;
+    padding: 6px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    max-width: 80%;
+    width: 800px;
 }
 
 .search-box:focus {
     border-color: #2e86ab;
 }
 
+/* Patient Summary Card */
+.patient-summary-card {
+    background: #f0f7ff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border: 1px solid #cce3ff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.patient-summary-card h2 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #1976d2;
+    font-weight: 600;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.summary-grid p {
+    margin: 0;
+    font-size: 15px;
+    color: #444;
+}
+
+.summary-grid strong {
+    color: #333;
+    font-weight: 600;
+}
+
+.no-records {
+    padding: 40px;
+    text-align: center;
+    color: #666;
+    font-size: 18px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+}
 
 /* Tabs */
 .tabs {
@@ -95,27 +138,6 @@
     background: #1e5f7a;
 }
 
-.vitals-display {
-    background: #f8f9fa;
-    padding: 25px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 25px;
-}
-
-.vitals-list {
-    list-style: disc;
-    padding-left: 20px;
-    margin: 0;
-}
-
-.vitals-list li {
-    padding: 5px 0;
-    color: #333;
-    font-size: 15px;
-    line-height: 1.5;
-}
-
 /* Medical Records List */
 .medical-records-list {
     display: flex;
@@ -139,7 +161,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    flex-direction: row; /* Changed from column to row */
+    flex-direction: row;
 }
 
 .medical-record-item:last-child {
@@ -148,7 +170,7 @@
 
 .record-content {
     flex: 1;
-    margin-right: 20px; /* Add space between content and actions */
+    margin-right: 20px;
 }
 
 .record-content p {
@@ -172,7 +194,7 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 10px;
-    min-width: 120px; /* Ensure consistent width */
+    min-width: 120px;
 }
 
 .record-date {
@@ -181,7 +203,7 @@
     color: #333;
     white-space: nowrap;
     text-align: right;
-    margin: 0; /* Remove margin */
+    margin: 0;
 }
 
 /* Next button section */
@@ -211,45 +233,45 @@
     .medical-records-container {
         padding: 20px;
     }
-    
+
     .content-header {
         flex-direction: column;
         gap: 20px;
         align-items: flex-start;
     }
-    
+
     .search-container {
         position: static;
         transform: none;
     }
-    
+
     .search-box {
         width: 100%;
         max-width: 300px;
     }
-    
+
     .page-title {
         font-size: 28px;
     }
-    
+
     .medical-record-item {
         flex-direction: column;
         gap: 15px;
     }
-    
+
     .record-content {
         margin-right: 0;
     }
-    
+
     .record-actions {
         align-items: flex-end;
         width: 100%;
     }
-    
+
     .vitals-below-content {
         justify-content: flex-start;
     }
-    
+
     .record-date {
         text-align: right;
     }

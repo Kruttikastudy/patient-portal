@@ -1,169 +1,82 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom"; // <-- for accessing location.state
+import { useLocation } from "react-router-dom";
 import "./recentVisits.css";
 
-const visitsData = [
-  { 
-    date: "28 June 2024", 
-    purpose: "Diabetes Follow-up", 
-    doctor: "Dr. SM John",
-    clinicalSummary: {
-      chiefComplaints: "Patient reports stable blood sugar levels with occasional morning spikes.",
-      hpi: "Blood glucose readings have been within target range for the past month with lifestyle modifications.",
-      pmh: "Type 2 diabetes diagnosed 6 months ago. History of hypertension.",
-      medicationHistory: "Metformin 500mg twice daily, previously on Lisinopril.",
-      testResults: "HbA1c: 6.8%, fasting glucose: 125 mg/dL.",
-      reminders: "Continue current medication regimen, quarterly HbA1c monitoring.",
-      planCare: "Maintain current Metformin dose, dietary counseling, regular exercise."
-    },
-    vitals: {
-      bloodPressure: "128/84 mmHg",
-      pulseRate: "74 beats per minute",
-      respiratoryRate: "16 breaths per minute",
-      temperature: "98.4°F (36.9°C)",
-      height: "5 feet 10 inches (178 cm)",
-      weight: "165 pounds (75 kg)",
-      bmi: "23.6 (within the normal range)",
-      spo2: "98%"
-    }
-  },
-  { 
-    date: "28 May 2024", 
-    purpose: "Regular Checkup", 
-    doctor: "Dr. SM John",
-    clinicalSummary: {
-      chiefComplaints: "Patient reports experiencing persistent headaches and dizziness for the past week.",
-      hpi: "Headaches started gradually with nausea and occasional blurred vision.",
-      pmh: "History of hypertension diagnosed two years ago. No prior surgeries.",
-      medicationHistory: "Lisinopril 10 mg once daily.",
-      testResults: "BP readings consistently above 140/90 mmHg.",
-      reminders: "Follow-up appointment for BP check scheduled.",
-      planCare: "Increase lisinopril to 20 mg daily, monitor BP regularly."
-    },
-    vitals: {
-      bloodPressure: "120/80 mmHg",
-      pulseRate: "70 beats per minute",
-      respiratoryRate: "16 breaths per minute",
-      temperature: "98.6°F (37°C)",
-      height: "5 feet 10 inches (178 cm)",
-      weight: "160 pounds (73 kg)",
-      bmi: "23.0 (within the normal range)",
-      spo2: "98%"
-    }
-  },
-  { 
-    date: "28 April 2024", 
-    purpose: "Flu Symptoms", 
-    doctor: "Dr. SM John",
-    clinicalSummary: {
-      chiefComplaints: "Fever, cough, and sore throat for 3 days.",
-      hpi: "Symptoms started suddenly, no history of recent travel.",
-      pmh: "No chronic conditions. No prior hospitalizations.",
-      medicationHistory: "Occasional paracetamol for fever.",
-      testResults: "Rapid flu test positive for Influenza A.",
-      reminders: "Complete prescribed 5-day antiviral course.",
-      planCare: "Supportive care, hydration, rest."
-    },
-    vitals: {
-      bloodPressure: "118/76 mmHg",
-      pulseRate: "80 beats per minute",
-      respiratoryRate: "16 breaths per minute",
-      temperature: "100.4°F (38°C)",
-      height: "5 feet 10 inches (178 cm)",
-      weight: "158 pounds (72 kg)",
-      bmi: "22.7 (within the normal range)",
-      spo2: "97%"
-    }
-  },
-  { 
-    date: "28 March 2024", 
-    purpose: "Back Pain", 
-    doctor: "Dr. SM John",
-    clinicalSummary: {
-      chiefComplaints: "Chronic lower back pain, worsens with prolonged sitting.",
-      hpi: "Pain ongoing for 6 months, occasional radiation to left leg.",
-      pmh: "No previous spinal surgery. No diabetes or hypertension.",
-      medicationHistory: "Occasional ibuprofen use.",
-      testResults: "MRI showed mild lumbar disc bulge.",
-      reminders: "Physiotherapy follow-up scheduled.",
-      planCare: "Recommend physiotherapy, posture correction, pain management."
-    },
-    vitals: {
-      bloodPressure: "122/82 mmHg",
-      pulseRate: "72 beats per minute",
-      respiratoryRate: "15 breaths per minute",
-      temperature: "98.2°F (36.8°C)",
-      height: "5 feet 10 inches (178 cm)",
-      weight: "162 pounds (74 kg)",
-      bmi: "23.2 (within the normal range)",
-      spo2: "99%"
-    }
-  },
-  { 
-    date: "28 Feb 2024", 
-    purpose: "Flu Symptoms", 
-    doctor: "Dr. SM Jane",
-    clinicalSummary: {
-      chiefComplaints: "Fever, body aches, mild cough.",
-      hpi: "Symptoms started 2 days ago.",
-      pmh: "No chronic conditions.",
-      medicationHistory: "Paracetamol occasionally.",
-      testResults: "Rapid flu test pending.",
-      reminders: "Rest and hydration.",
-      planCare: "Supportive care."
-    },
-    vitals: {
-      bloodPressure: "117/75 mmHg",
-      pulseRate: "78 beats per minute",
-      respiratoryRate: "16 breaths per minute",
-      temperature: "99.5°F (37.5°C)",
-      height: "5 feet 10 inches (178 cm)",
-      weight: "157 pounds (71 kg)",
-      bmi: "22.5 (normal)",
-      spo2: "97%"
-    }
-  },
-  { 
-    date: "28 Jan 2024", 
-    purpose: "Cold", 
-    doctor: "Dr. SM Jane",
-    clinicalSummary: {
-      chiefComplaints: "Runny nose, mild headache.",
-      hpi: "Symptoms for 1 day.",
-      pmh: "No chronic conditions.",
-      medicationHistory: "None.",
-      testResults: "None.",
-      reminders: "Monitor symptoms.",
-      planCare: "Supportive care, rest."
-    },
-    vitals: {
-      bloodPressure: "116/74 mmHg",
-      pulseRate: "75 beats per minute",
-      respiratoryRate: "16 breaths per minute",
-      temperature: "98.8°F (37.1°C)",
-      height: "5 feet 10 inches (178 cm)",
-      weight: "156 pounds (71 kg)",
-      bmi: "22.4 (normal)",
-      spo2: "98%"
-    }
-  }
-];
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 
 const RecentVisitsPage = () => {
   const [activeTab, setActiveTab] = useState("Recent Visits");
   const [selectedVisit, setSelectedVisit] = useState(null);
   const [selectedVitals, setSelectedVitals] = useState(null);
+  const [visitsData, setVisitsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const location = useLocation(); // <-- useLocation hook
+  const location = useLocation();
+  const patientId = localStorage.getItem("currentPatientId");
+
+  useEffect(() => {
+    const fetchVisits = async () => {
+      if (!patientId) {
+        setError("No patient selected");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/visits/${patientId}`);
+        const json = await response.json();
+
+        if (json.success) {
+          const formattedVisits = json.data.map(visit => ({
+            date: visit.appointment_date || new Date(visit.createdAt).toLocaleDateString(),
+            purpose: visit.visit_type || "General Visit",
+            doctor: visit.seen_by || "Unknown Doctor",
+            clinicalSummary: {
+              chiefComplaints: visit.chief_complaints || "Not recorded",
+              diagnosis: visit.diagnosis?.icd10_quickest || visit.diagnosis?.full_icd10_list || "None",
+              treatment: visit.treatment || "Not recorded",
+              medicationHistory: visit.medication_history || [],
+              investigationRequest: visit.investigation_request || "None",
+              investigationResult: visit.investigation_result || "None",
+              notes: visit.notes || "None"
+            },
+            vitals: {
+              bloodPressure: visit.vitals?.blood_pressure || "N/A",
+              pulseRate: visit.vitals?.pulse ? `${visit.vitals.pulse} bpm` : "N/A",
+              respiratoryRate: visit.vitals?.respiratory_rate ? `${visit.vitals.respiratory_rate} bpm` : "N/A",
+              temperature: visit.vitals?.temperature ? `${visit.vitals.temperature}°F` : "N/A",
+              height: visit.vitals?.height ? `${visit.vitals.height} cm` : "N/A",
+              weight: visit.vitals?.weight ? `${visit.vitals.weight} kg` : "N/A",
+              spo2: visit.vitals?.oxygen_saturation ? `${visit.vitals.oxygen_saturation}%` : "N/A"
+            }
+          }));
+          setVisitsData(formattedVisits);
+        } else {
+          setError("Failed to load visits");
+        }
+      } catch (err) {
+        console.error("Error fetching visits:", err);
+        setError("Error loading visits");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVisits();
+  }, [patientId]);
 
   useEffect(() => {
     if (location.state?.openVitals && location.state?.visitIndex !== null) {
       setActiveTab("Vitals");
       setSelectedVitals(location.state.visitIndex);
     }
-  }, [location.state]); // now using React Router state correctly
+  }, [location.state]);
 
-  const mostRecentVisit = visitsData[0];
+  const mostRecentVisit = visitsData.length > 0 ? visitsData[0] : null;
+
+  if (loading) return <div className="recent-visits-container">Loading visits...</div>;
+  if (error) return <div className="recent-visits-container">{error}</div>;
 
   return (
     <div className="recent-visits-container">
@@ -196,39 +109,65 @@ const RecentVisitsPage = () => {
       {/* Tab Content */}
       {activeTab === "Recent Visits" ? (
         <>
-          <div className="visit-details">
-            <p><strong>Date of Visit:</strong> {mostRecentVisit.date}</p>
-            <p><strong>Doctor's Name:</strong> {mostRecentVisit.doctor}</p>
+          {mostRecentVisit ? (
+            <>
+              <div className="visit-details">
+                <p><strong>Date of Visit:</strong> {mostRecentVisit.date}</p>
+                <p><strong>Doctor's Name:</strong> {mostRecentVisit.doctor}</p>
 
-            <div className="condition">
-              <button
-                className="condition-link"
-                onClick={() => console.log("Diabetes Mellitus Type 2 clicked")}
-              >
-                Diabetes Mellitus Type 2
-              </button>
-              <ul>
-                <li>Description: Type 2 diabetes mellitus</li>
-                <li>Date of Onset: 2023-12-15</li>
-                <li>Status: Active</li>
-                <li>ICD Code: E11.9</li>
-                <li>Severity Impact: Moderate</li>
-                <li>Risk Factors: Obesity, Family history, Sedentary lifestyle</li>
-                <li>Treatment Plan: Metformin, dietary modifications, exercise</li>
-                <li>Test Results: Link</li>
-              </ul>
-            </div>
-          </div>
+                <div className="condition">
+                  <button
+                    className="condition-link"
+                    onClick={() => console.log(`${mostRecentVisit.clinicalSummary.diagnosis} clicked`)}
+                  >
+                    {mostRecentVisit.clinicalSummary.diagnosis}
+                  </button>
+                </div>
+              </div>
 
-          <div className="clinical-summary">
-            <p><strong>Chief Complaints:</strong> {mostRecentVisit.clinicalSummary.chiefComplaints}</p>
-            <p><strong>HPI:</strong> {mostRecentVisit.clinicalSummary.hpi}</p>
-            <p><strong>PMH:</strong> {mostRecentVisit.clinicalSummary.pmh}</p>
-            <p><strong>Medication History:</strong> {mostRecentVisit.clinicalSummary.medicationHistory}</p>
-            <p><strong>Test Results:</strong> {mostRecentVisit.clinicalSummary.testResults}</p>
-            <p><strong>Reminders:</strong> {mostRecentVisit.clinicalSummary.reminders}</p>
-            <p><strong>Plan Care:</strong> {mostRecentVisit.clinicalSummary.planCare}</p>
-          </div>
+              <div className="clinical-summary">
+                <p><strong>Chief Complaints:</strong> {mostRecentVisit.clinicalSummary.chiefComplaints}</p>
+                <p><strong>Diagnosis:</strong> {mostRecentVisit.clinicalSummary.diagnosis}</p>
+                <p><strong>Treatment:</strong> {mostRecentVisit.clinicalSummary.treatment}</p>
+
+                <div className="medication-history-section">
+                  <strong>Medication History:</strong>
+                  {mostRecentVisit.clinicalSummary.medicationHistory.length > 0 ? (
+                    <table className="medication-table">
+                      <thead>
+                        <tr>
+                          <th>Medicine</th>
+                          <th>Dosage</th>
+                          <th>Frequency</th>
+                          <th>Duration</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {mostRecentVisit.clinicalSummary.medicationHistory.map((med, index) => (
+                          <tr key={index}>
+                            <td>{med.medicine}</td>
+                            <td>{med.dosage}mg</td>
+                            <td>{med.frequency}</td>
+                            <td>{med.duration}</td>
+                            <td>{med.status}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <span> None</span>
+                  )}
+                </div>
+
+                <p><strong>Investigation Request:</strong> {mostRecentVisit.clinicalSummary.investigationRequest}</p>
+                <p><strong>Investigation Result:</strong> {mostRecentVisit.clinicalSummary.investigationResult}</p>
+                <p><strong>Notes:</strong> {mostRecentVisit.clinicalSummary.notes}</p>
+              </div>
+            </>
+          ) : (
+            <p>No recent visits recorded.</p>
+          )}
         </>
       ) : activeTab === "Visit History" ? (
         <div className="visit-history">
@@ -252,7 +191,7 @@ const RecentVisitsPage = () => {
                 </button>
 
                 <button
-                  className="summary-btn"
+                  className="vitals-btn"
                   onClick={() => setSelectedVisit(selectedVisit === idx ? null : idx)}
                 >
                   Clinical Summary
@@ -262,18 +201,48 @@ const RecentVisitsPage = () => {
               {selectedVisit === idx && (
                 <div className="clinical-summary">
                   <p><strong>Chief Complaints:</strong> {visit.clinicalSummary.chiefComplaints}</p>
-                  <p><strong>HPI:</strong> {visit.clinicalSummary.hpi}</p>
-                  <p><strong>PMH:</strong> {visit.clinicalSummary.pmh}</p>
-                  <p><strong>Medication History:</strong> {visit.clinicalSummary.medicationHistory}</p>
-                  <p><strong>Test Results:</strong> {visit.clinicalSummary.testResults}</p>
-                  <p><strong>Reminders:</strong> {visit.clinicalSummary.reminders}</p>
-                  <p><strong>Plan Care:</strong> {visit.clinicalSummary.planCare}</p>
+                  <p><strong>Diagnosis:</strong> {visit.clinicalSummary.diagnosis}</p>
+                  <p><strong>Treatment:</strong> {visit.clinicalSummary.treatment}</p>
+
+                  <div className="medication-history-section">
+                    <strong>Medication History:</strong>
+                    {visit.clinicalSummary.medicationHistory.length > 0 ? (
+                      <table className="medication-table">
+                        <thead>
+                          <tr>
+                            <th>Medicine</th>
+                            <th>Dosage</th>
+                            <th>Frequency</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {visit.clinicalSummary.medicationHistory.map((med, index) => (
+                            <tr key={index}>
+                              <td>{med.medicine}</td>
+                              <td>{med.dosage}mg</td>
+                              <td>{med.frequency}</td>
+                              <td>{med.duration}</td>
+                              <td>{med.status}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <span> None</span>
+                    )}
+                  </div>
+
+                  <p><strong>Investigation Request:</strong> {visit.clinicalSummary.investigationRequest}</p>
+                  <p><strong>Investigation Result:</strong> {visit.clinicalSummary.investigationResult}</p>
+                  <p><strong>Notes:</strong> {visit.clinicalSummary.notes}</p>
                 </div>
               )}
             </div>
           ))}
         </div>
-      ) : activeTab === "Vitals" && selectedVitals !== null ? (
+      ) : activeTab === "Vitals" && selectedVitals !== null && visitsData[selectedVitals] ? (
         <div className="vitals-summary">
           <h2>Vitals for {visitsData[selectedVitals].date}</h2>
           <p><strong>Blood Pressure:</strong> {visitsData[selectedVitals].vitals.bloodPressure}</p>
@@ -282,7 +251,6 @@ const RecentVisitsPage = () => {
           <p><strong>Temperature:</strong> {visitsData[selectedVitals].vitals.temperature}</p>
           <p><strong>Height:</strong> {visitsData[selectedVitals].vitals.height}</p>
           <p><strong>Weight:</strong> {visitsData[selectedVitals].vitals.weight}</p>
-          <p><strong>BMI:</strong> {visitsData[selectedVitals].vitals.bmi}</p>
           <p><strong>SpO₂:</strong> {visitsData[selectedVitals].vitals.spo2}</p>
         </div>
       ) : null}
