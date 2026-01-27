@@ -1,4 +1,3 @@
-
 .login-container {
   width: 100vw;
   height: 100vh;
@@ -40,9 +39,12 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.4;
   }
+
   50% {
     opacity: 0.8;
   }
@@ -171,4 +173,25 @@
 .forgot-password:hover {
   color: #112853;
   text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-panel {
+    width: 90%;
+    padding: 40px 20px;
+    margin: 20px;
+  }
+
+  .login-panel h1 {
+    font-size: 40px;
+  }
+
+  .login-panel h2 {
+    font-size: 20px;
+  }
+
+  .login-panel button {
+    width: 100%;
+  }
 }

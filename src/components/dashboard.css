@@ -2,7 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 /* Apply Roboto globally */
-body, h1, h2, h3, p, ul, li, div, button {
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li,
+div,
+button {
     font-family: 'Roboto', Arial, sans-serif;
 }
 
@@ -31,17 +39,17 @@ body, h1, h2, h3, p, ul, li, div, button {
 }
 
 .search-container {
-  flex-grow: 1;
-  display: flex;
-  justify-content: flex-end;
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .search-box {
-  padding: 6px;
-  border: 1px solid #000;
-  border-radius: 20px;
-  max-width: 80%;
-  width: 800px;
+    padding: 6px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    max-width: 80%;
+    width: 800px;
 }
 
 .search-box:focus {
@@ -59,6 +67,13 @@ body, h1, h2, h3, p, ul, li, div, button {
     grid-template-columns: 1fr 400px;
     gap: 40px;
     min-height: calc(100vh - 300px);
+}
+
+@media (max-width: 1200px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
 }
 
 .section-title {
@@ -80,9 +95,11 @@ body, h1, h2, h3, p, ul, li, div, button {
 }
 
 .recent-visits-section {
-  grid-column: 1 / -1;  /* span full grid */
-  width: 100%;
-  padding-right: 0;     /* remove right padding if applied */
+    grid-column: 1 / -1;
+    /* span full grid */
+    width: 100%;
+    padding-right: 0;
+    /* remove right padding if applied */
 }
 
 
@@ -134,32 +151,32 @@ body, h1, h2, h3, p, ul, li, div, button {
     .dashboard-container {
         padding: 20px;
     }
-    
+
     .content-header {
         flex-direction: column;
         gap: 20px;
         align-items: flex-start;
     }
-    
+
     .search-container {
         position: static;
         transform: none;
     }
-    
+
     .search-box {
         width: 100%;
         max-width: 300px;
     }
-    
+
     .page-title {
         font-size: 28px;
     }
-    
+
     .content-grid {
         grid-template-columns: 1fr;
         gap: 30px;
     }
-    
+
     .visit-card {
         min-height: auto;
     }

@@ -34,7 +34,7 @@ const RecentVisitsPage = () => {
             doctor: visit.seen_by || "Unknown Doctor",
             clinicalSummary: {
               chiefComplaints: visit.chief_complaints || "Not recorded",
-              diagnosis: visit.diagnosis?.icd10_quickest || visit.diagnosis?.full_icd10_list || "None",
+              diagnosis: visit.diagnosis?.full_icd10_list || visit.diagnosis?.icd10_quickest || "None",
               treatment: visit.treatment || "Not recorded",
               medicationHistory: visit.medication_history || [],
               investigationRequest: visit.investigation_request || "None",
