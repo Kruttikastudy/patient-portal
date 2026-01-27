@@ -13,41 +13,137 @@
 .app-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* full viewport height */
+  height: 100vh;
+  /* full viewport height */
 }
 
 /* Scrollable content area below the fixed top band */
 .layout-content {
-  display: flex;           /* row layout for sidebar + main content */
-  flex: 1;                 /* take remaining height */
-  margin-top: 60px;        /* space for fixed top band */
-  overflow: hidden;        /* no extra scroll on the row */
+  display: flex;
+  /* row layout for sidebar + main content */
+  flex: 1;
+  /* take remaining height */
+  margin-top: 60px;
+  /* space for fixed top band */
+  overflow: hidden;
+  /* no extra scroll on the row */
+  position: relative;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 400px;           
-  background: #ffffff;
-  overflow-y: auto;        
+/* Sidebar Container to handle mobile toggle */
+.sidebar-container {
+  display: flex;
   flex-shrink: 0;
-  border-right: 1px solid #d1d6d8;
-  padding: 0;              /* remove top padding */
-  height: 100vh;           /* full viewport height */
-  position: sticky;        /* keep sidebar in place */
-  top: 0;                  /* align with top blue band */
+  width: 350px;
+  /* Fixed width on desktop */
+  height: calc(100vh - 60px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
+/* Sidebar (handled in sidebar.css for inner styles, but we constrain width here via container) */
 
 /* Main content area */
 .main-content {
-  flex: 1;                 
-  overflow-y: auto;        /* vertical scroll */
+  flex: 1;
+  overflow-y: auto;
+  /* vertical scroll */
   padding: 30px 40px;
   box-sizing: border-box;
   background: #f8f9fa;
+  width: 100%;
+}
+
+/* Hamburger Menu (Hidden on Desktop) */
+.hamburger-menu {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0 20px;
+  line-height: 60px;
+  height: 60px;
+}
+
+.sidebar-overlay {
+  display: none;
 }
 
 /* Optional: smooth scroll */
-.main-content, .sidebar {
+.main-content,
+.sidebar {
+  scroll-behavior: smooth;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 1000px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  .sidebar-container {
+    /* Overlay Container Logic */
+    display: block;
+    position: fixed;
+    top: 60px;
+    /* Below top band */
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 60px);
+    z-index: 2000;
+    transform: translateX(-100%);
+    /* Hidden by default */
+    background: transparent;
+    pointer-events: none;
+    /* Let clicks pass through when hidden */
+    transition: transform 0.3s ease-in-out;
+    /* Animate container or just sidebar? Let's animate transform */
+  }
+
+  .sidebar-container.open {
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  /* The actual sidebar drawer via descendant selector assuming Sidebar renders .sidebar */
+  .sidebar-container .sidebar {
+    width: 280px !important;
+    /* Force width on mobile */
+    height: 100%;
+    background: #ffffff;
+    /* Ensure white bg */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Dark Overlay Background */
+  .sidebar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    display: block;
+    z-index: -1;
+    /* Behind sidebar */
+  }
+
+  .sidebar-container.open .sidebar-overlay {
+    opacity: 1;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+}
+
+/* Optional: smooth scroll */
+.main-content,
+.sidebar {
   scroll-behavior: smooth;
 }

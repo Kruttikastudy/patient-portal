@@ -211,3 +211,40 @@
 .medication-table tr:hover {
     background-color: #f1f1f1;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .recent-visits-container {
+        padding: 15px;
+    }
+
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .search-box {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .visit-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .visit-date {
+        margin-top: 5px;
+    }
+
+    .visit-actions {
+        flex-direction: column;
+    }
+
+    .medication-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

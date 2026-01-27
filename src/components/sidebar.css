@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');
 
 .sidebar {
-  width: 350px;
-  background: #033d6d;
+  width: 100%;
+  background: #ffffff;
   border-right: 1px solid #8f9ea3;
-  height: 100vh;
+  height: 100%;
   position: relative;
   overflow-y: auto;
-  overflow: auto;
+  overflow-x: hidden;
 }
 
 /* Fixed header */
@@ -16,12 +16,12 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  border-bottom: 4px solid #1976d2
-;
+  border-bottom: 4px solid #1976d2;
   background: #ffffff;
   position: relative;
   z-index: 10;
-  height: 100px; /* Fixed height */
+  height: 100px;
+  /* Fixed height */
   box-sizing: border-box;
 }
 
@@ -42,13 +42,14 @@
   font-size: 26px;
   font-weight: 600;
   color: #000000;
-  font-family: 'Bricolage Grotesque Variable', sans-serif; 
+  font-family: 'Bricolage Grotesque Variable', sans-serif;
 }
 
 /* Scrollable nav container - COMPLETELY REWRITTEN */
 .sidebar-scroll {
   position: absolute;
-  top: 100px; /* height of header */
+  top: 100px;
+  /* height of header */
   left: 0;
   right: 0;
   bottom: 0;
@@ -85,7 +86,8 @@
   z-index: 2;
   border-radius: 8px;
   margin: 2px 8px;
-  padding: 18px 17px; /* Adjust padding to maintain visual consistency */
+  padding: 18px 17px;
+  /* Adjust padding to maintain visual consistency */
 }
 
 .nav-item.active {
@@ -103,7 +105,8 @@
 .settings-subnav {
   border-top: 2px solid #ffffff;
   background: #ffffff;
-  overflow: visible; /* Allow hover effects to show */
+  overflow: visible;
+  /* Allow hover effects to show */
 }
 
 .settings-nav-item {
@@ -129,7 +132,8 @@
   z-index: 2;
   border-radius: 6px;
   margin: 1px 12px;
-  padding: 15px 23px; /* Adjust padding to maintain visual consistency */
+  padding: 15px 23px;
+  /* Adjust padding to maintain visual consistency */
 }
 
 .settings-nav-item.active {
@@ -145,7 +149,8 @@
 
 .account-security-container {
   position: relative;
-  overflow: visible; /* Allow hover effects to show */
+  overflow: visible;
+  /* Allow hover effects to show */
 }
 
 .nav-item-content {
@@ -166,6 +171,7 @@
 .nav-item:hover .nav-icon {
   transform: scale(1.1);
 }
+
 /* Replace your existing .toggle-arrow styles with this: */
 .toggle-arrow-icon {
   width: 16px;
@@ -187,14 +193,23 @@
 }
 
 @keyframes rotateArrow {
-  0% { transform: rotate(0deg); }
-  50% { transform: rotate(180deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Remove the old text-based toggle arrow styles if they exist */
 .toggle-arrow {
-  display: none; /* Hide the old text arrows */
+  display: none;
+  /* Hide the old text arrows */
 }
 
 /* Sub-options with enhanced hover effects */
@@ -203,7 +218,8 @@
   border-left: 8px solid #d1d6d8;
   margin: 0;
   padding: 0;
-  overflow: visible; /* Allow hover effects to show */
+  overflow: visible;
+  /* Allow hover effects to show */
 }
 
 .sub-options .settings-nav-item {
@@ -220,7 +236,8 @@
   box-shadow: 0 1px 6px rgba(46, 134, 171, 0.1);
   border-radius: 4px;
   margin: 1px 8px;
-  padding: 10px 27px 10px 47px; /* Adjust padding */
+  padding: 10px 27px 10px 47px;
+  /* Adjust padding */
 }
 
 /* Logout button - ENHANCED */

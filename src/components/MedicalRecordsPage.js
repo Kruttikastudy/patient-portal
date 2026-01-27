@@ -42,7 +42,7 @@ const MedicalRecordsPage = () => {
             date: visit.appointment_date || new Date(visit.createdAt).toLocaleDateString(),
             purpose: visit.visit_type || "General Visit",
             chiefComplaints: visit.chief_complaints || "Not recorded",
-            conditions: visit.diagnosis?.icd10_quickest || visit.diagnosis?.full_icd10_list || "None",
+            conditions: visit.diagnosis?.full_icd10_list || visit.diagnosis?.icd10_quickest || "None",
             medications: visit.medication_history?.length > 0
               ? visit.medication_history.map(m => `${m.medicine} ${m.dosage}mg`).join(", ")
               : "None",
