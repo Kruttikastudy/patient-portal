@@ -3,6 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const authRoutes = require("./src/routers/authRoutes");
 const patientRoutes = require("./src/routers/patientRoutes");
+const aiRoutes = require("./src/routers/aiRoutes");
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get("/health", (_req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api", patientRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Serve static files from the React app build folder
 if (process.env.NODE_ENV === "production") {

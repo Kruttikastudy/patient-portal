@@ -1,0 +1,151 @@
+.appointments-container {
+    padding: 30px;
+    background-color: #f0f4f8;
+    min-height: 100vh;
+}
+
+.appointments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #1976d2;
+    padding-bottom: 15px;
+}
+
+.appointments-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1976d2;
+    margin: 0;
+}
+
+.appointments-subtitle {
+    color: #546e7a;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.appointments-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+}
+
+.appointment-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 6px solid #1976d2;
+}
+
+.appointment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(25, 118, 210, 0.15);
+}
+
+.appointment-card.urgent {
+    border-left-color: #d32f2f;
+}
+
+.card-header {
+    background-color: #f8fbff;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e3f2fd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.appointment-type {
+    font-weight: 700;
+    color: #1976d2;
+    font-size: 18px;
+}
+
+.appointment-badge {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.appointment-badge.urgent {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.info-item {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.info-label {
+    min-width: 80px;
+    font-weight: 600;
+    color: #78909c;
+    font-size: 14px;
+}
+
+.info-value {
+    color: #37474f;
+    font-size: 15px;
+}
+
+.appointment-time-box {
+    margin-top: 15px;
+    padding: 12px;
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    color: white;
+    border-radius: 8px;
+}
+
+.time-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.date-text {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.time-divider {
+    width: 2px;
+    height: 18px;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.time-value {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.no-appointments {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px;
+    background: white;
+    border-radius: 12px;
+    color: #90a4ae;
+}
+
+@media (max-width: 600px) {
+    .appointments-list {
+        grid-template-columns: 1fr;
+    }
+}

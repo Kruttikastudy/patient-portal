@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./medicalRecords.css";
+import ConditionAdviceModal from "./ConditionAdviceModal";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 
@@ -10,6 +11,14 @@ const MedicalRecordsPage = () => {
   const [patientData, setPatientData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // AI Advice Modal State
+  const [isAdviceModalOpen, setIsAdviceModalOpen] = useState(false);
+  const [adviceCondition, setAdviceCondition] = useState("");
+  const [adviceText, setAdviceText] = useState("");
+  const [adviceLoading, setAdviceLoading] = useState(false);
+  const [adviceError, setAdviceError] = useState("");
+
   const navigate = useNavigate();
   const patientId = localStorage.getItem("currentPatientId");
 
@@ -67,6 +76,37 @@ const MedicalRecordsPage = () => {
     fetchData();
   }, [patientId]);
 
+  const fetchAdvice = async (condition) => {
+    if (!condition || condition === "None") return;
+
+    setAdviceCondition(condition);
+    setIsAdviceModalOpen(true);
+    setAdviceLoading(true);
+    setAdviceError("");
+    setAdviceText("");
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/ai/condition-advice`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ condition }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setAdviceText(data.advice);
+      } else {
+        setAdviceError(data.message || "Failed to get advice.");
+      }
+    } catch (err) {
+      console.error("Error fetching advice:", err);
+      setAdviceError("Error connecting to AI service.");
+    } finally {
+      setAdviceLoading(false);
+    }
+  };
+
   const currentRecords = records.slice(0, 3);
   const historicalRecords = records; // Show all records as requested
 
@@ -82,7 +122,19 @@ const MedicalRecordsPage = () => {
             <div className="record-content">
               <p><strong>Purpose:</strong> {record.purpose}</p>
               <p><strong>Chief Complaints:</strong> {record.chiefComplaints}</p>
-              <p><strong>Conditions:</strong> {record.conditions}</p>
+
+              <div className="record-field-row">
+                <strong>Conditions: </strong>
+                <span
+                  className="condition-linkable"
+                  onClick={() => fetchAdvice(record.conditions)}
+                  title="Click for diet and exercise advice"
+                  style={{ color: '#1976d2', cursor: 'pointer', fontWeight: 'bold', textDecoration: 'underline' }}
+                >
+                  {record.conditions}
+                </span>
+              </div>
+
               <p><strong>Medications:</strong> {record.medications}</p>
               <p><strong>Treatment:</strong> {record.treatment}</p>
               <p><strong>Allergies:</strong> {record.allergies}</p>
@@ -158,6 +210,16 @@ const MedicalRecordsPage = () => {
       {activeTab === "Current Records"
         ? renderRecords(currentRecords)
         : renderRecords(historicalRecords)}
+
+      {/* Advice Modal */}
+      <ConditionAdviceModal
+        isOpen={isAdviceModalOpen}
+        onClose={() => setIsAdviceModalOpen(false)}
+        condition={adviceCondition}
+        advice={adviceText}
+        loading={adviceLoading}
+        error={adviceError}
+      />
     </div>
   );
 };

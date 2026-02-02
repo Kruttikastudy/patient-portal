@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./recentVisits.css";
+import ConditionAdviceModal from "./ConditionAdviceModal";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 
@@ -11,6 +12,13 @@ const RecentVisitsPage = () => {
   const [visitsData, setVisitsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  // AI Advice Modal State
+  const [isAdviceModalOpen, setIsAdviceModalOpen] = useState(false);
+  const [adviceCondition, setAdviceCondition] = useState("");
+  const [adviceText, setAdviceText] = useState("");
+  const [adviceLoading, setAdviceLoading] = useState(false);
+  const [adviceError, setAdviceError] = useState("");
 
   const location = useLocation();
   const patientId = localStorage.getItem("currentPatientId");
@@ -73,6 +81,37 @@ const RecentVisitsPage = () => {
     }
   }, [location.state]);
 
+  const fetchAdvice = async (condition) => {
+    if (!condition || condition === "None") return;
+
+    setAdviceCondition(condition);
+    setIsAdviceModalOpen(true);
+    setAdviceLoading(true);
+    setAdviceError("");
+    setAdviceText("");
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/ai/condition-advice`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ condition }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setAdviceText(data.advice);
+      } else {
+        setAdviceError(data.message || "Failed to get advice.");
+      }
+    } catch (err) {
+      console.error("Error fetching advice:", err);
+      setAdviceError("Error connecting to AI service.");
+    } finally {
+      setAdviceLoading(false);
+    }
+  };
+
   const mostRecentVisit = visitsData.length > 0 ? visitsData[0] : null;
 
   if (loading) return <div className="recent-visits-container">Loading visits...</div>;
@@ -116,9 +155,12 @@ const RecentVisitsPage = () => {
                 <p><strong>Doctor's Name:</strong> {mostRecentVisit.doctor}</p>
 
                 <div className="condition">
+                  <strong>Condition: </strong>
                   <button
                     className="condition-link"
-                    onClick={() => console.log(`${mostRecentVisit.clinicalSummary.diagnosis} clicked`)}
+                    onClick={() => fetchAdvice(mostRecentVisit.clinicalSummary.diagnosis)}
+                    title="Click for diet and exercise advice"
+                    style={{ textDecoration: 'underline', cursor: 'pointer', color: '#007bff', background: 'none', border: 'none', padding: 0, fontSize: 'inherit', fontWeight: 'bold' }}
                   >
                     {mostRecentVisit.clinicalSummary.diagnosis}
                   </button>
@@ -127,7 +169,15 @@ const RecentVisitsPage = () => {
 
               <div className="clinical-summary">
                 <p><strong>Chief Complaints:</strong> {mostRecentVisit.clinicalSummary.chiefComplaints}</p>
-                <p><strong>Diagnosis:</strong> {mostRecentVisit.clinicalSummary.diagnosis}</p>
+                <div className="record-field-row" style={{ marginBottom: '10px' }}>
+                  <strong>Diagnosis: </strong>
+                  <span
+                    onClick={() => fetchAdvice(mostRecentVisit.clinicalSummary.diagnosis)}
+                    style={{ color: '#1976d2', cursor: 'pointer', fontWeight: 'bold', textDecoration: 'underline' }}
+                  >
+                    {mostRecentVisit.clinicalSummary.diagnosis}
+                  </span>
+                </div>
                 <p><strong>Treatment:</strong> {mostRecentVisit.clinicalSummary.treatment}</p>
 
                 <div className="medication-history-section">
@@ -201,7 +251,17 @@ const RecentVisitsPage = () => {
               {selectedVisit === idx && (
                 <div className="clinical-summary">
                   <p><strong>Chief Complaints:</strong> {visit.clinicalSummary.chiefComplaints}</p>
-                  <p><strong>Diagnosis:</strong> {visit.clinicalSummary.diagnosis}</p>
+
+                  <div className="record-field-row" style={{ marginBottom: '10px' }}>
+                    <strong>Diagnosis: </strong>
+                    <span
+                      onClick={() => fetchAdvice(visit.clinicalSummary.diagnosis)}
+                      style={{ color: '#1976d2', cursor: 'pointer', fontWeight: 'bold', textDecoration: 'underline' }}
+                    >
+                      {visit.clinicalSummary.diagnosis}
+                    </span>
+                  </div>
+
                   <p><strong>Treatment:</strong> {visit.clinicalSummary.treatment}</p>
 
                   <div className="medication-history-section">
@@ -254,6 +314,16 @@ const RecentVisitsPage = () => {
           <p><strong>SpO₂:</strong> {visitsData[selectedVitals].vitals.spo2}</p>
         </div>
       ) : null}
+
+      {/* Advice Modal */}
+      <ConditionAdviceModal
+        isOpen={isAdviceModalOpen}
+        onClose={() => setIsAdviceModalOpen(false)}
+        condition={adviceCondition}
+        advice={adviceText}
+        loading={adviceLoading}
+        error={adviceError}
+      />
     </div>
   );
 };

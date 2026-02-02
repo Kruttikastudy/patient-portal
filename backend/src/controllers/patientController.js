@@ -311,6 +311,45 @@ const getPatientVisits = async (req, res) => {
   }
 };
 
+const getPatientAppointments = async (req, res) => {
+  try {
+    const patientId = req.params.patientId;
+    const Appointment = require("../models/appointments");
+
+    // Fetch all appointments for this patient
+    const appointments = await Appointment.find({ patient_id: patientId }).lean();
+
+    // Get current date for filtering
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    // Filter and sort
+    const futureAppointments = appointments.filter(app => {
+      if (!app.appointment_date) return false;
+      const [month, day, year] = app.appointment_date.split('-').map(Number);
+      const appDate = new Date(year, month - 1, day);
+      return appDate >= today;
+    }).sort((a, b) => {
+      const [am, ad, ay] = a.appointment_date.split('-').map(Number);
+      const [bm, bd, by] = b.appointment_date.split('-').map(Number);
+      const dateA = new Date(ay, am - 1, ad);
+      const dateB = new Date(by, bm - 1, bd);
+      return dateA - dateB;
+    });
+
+    res.json({
+      success: true,
+      data: futureAppointments
+    });
+  } catch (error) {
+    console.error("Appointments fetch error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Unable to fetch patient appointments"
+    });
+  }
+};
+
 module.exports = {
   getPatientDemographics,
   getPatientContactInfo,
@@ -320,7 +359,8 @@ module.exports = {
   getSocialHistoryOverview,
   getSocialHistorySection,
   getPatientProfileSummary,
-  getPatientVisits
+  getPatientVisits,
+  getPatientAppointments
 };
 
 

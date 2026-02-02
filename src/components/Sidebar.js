@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./sidebar.css";
 import logo from "../assets/icons/logo.png";
 import dashboardIcon from "../assets/icons/dashboardIcon.png";
+import appointmentsIcon from "../assets/icons/visitsIcon.png"; // Reuse visits icon for appointments
 import visitsIcon from "../assets/icons/visitsIcon.png";
 import recordsIcon from "../assets/icons/recordsIcon.png";
 import billingIcon from "../assets/icons/billingIcon.png";
@@ -16,8 +17,25 @@ import "@fontsource-variable/bricolage-grotesque";
 
 const Sidebar = () => {
   const [showSettings, setShowSettings] = useState(false);
+  const [appointments, setAppointments] = useState([]);
   const [showSecurityOptions, setShowSecurityOptions] = useState(false);
   const navigate = useNavigate();
+
+  const patientId = localStorage.getItem("currentPatientId");
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+
+  useEffect(() => {
+    if (patientId) {
+      fetch(`${API_BASE_URL}/api/appointments/${patientId}`)
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            setAppointments(json.data || []);
+          }
+        })
+        .catch(err => console.error("Error fetching appointments for sidebar:", err));
+    }
+  }, [patientId, API_BASE_URL]);
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
@@ -41,6 +59,7 @@ const Sidebar = () => {
           {/* Main navigation */}
           {[
             { name: "Dashboard", path: "/dashboard", icon: dashboardIcon },
+            { name: "Appointments", path: "/appointments", icon: appointmentsIcon },
             { name: "Recent Visits", path: "/recent-visits", icon: visitsIcon },
             { name: "Medical Records", path: "/medical-records", icon: recordsIcon },
             { name: "Billing", path: "/billing", icon: billingIcon },
@@ -53,6 +72,9 @@ const Sidebar = () => {
               <div className="nav-item-content">
                 <img src={item.icon} alt={item.name} className="nav-icon" />
                 <div className="nav-text">{item.name}</div>
+                {item.name === "Appointments" && appointments.length > 0 && (
+                  <span className="appointment-count">{appointments.length}</span>
+                )}
               </div>
             </div>
           ))}
@@ -65,9 +87,9 @@ const Sidebar = () => {
             <div className="nav-item-content">
               <img src={settingsIcon} alt="Settings" className="nav-icon" />
               <div className="nav-text">Settings</div>
-              <img 
-                src={showSettings ? arrowUpIcon : arrowDownIcon} 
-                alt={showSettings ? "Collapse" : "Expand"} 
+              <img
+                src={showSettings ? arrowUpIcon : arrowDownIcon}
+                alt={showSettings ? "Collapse" : "Expand"}
                 className="toggle-arrow-icon"
               />
             </div>
@@ -93,9 +115,9 @@ const Sidebar = () => {
                 >
                   <div className="nav-item-content">
                     <div className="nav-text">Account Security</div>
-                    <img 
-                      src={showSecurityOptions ? arrowUpIcon : arrowDownIcon} 
-                      alt={showSecurityOptions ? "Collapse" : "Expand"} 
+                    <img
+                      src={showSecurityOptions ? arrowUpIcon : arrowDownIcon}
+                      alt={showSecurityOptions ? "Collapse" : "Expand"}
                       className="toggle-arrow-icon"
                     />
                   </div>
